@@ -38,7 +38,7 @@ class Item extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Text(itemName, style: itemNameStyle(),),
-          new Text(dateCreated, style: dateCreatedStyle(),)
+          new Text("Created on $dateCreated", style: dateCreatedStyle(),)
         ],
       ),
     );
@@ -51,7 +51,7 @@ TextStyle itemNameStyle() {
     color: Colors.white,
     fontWeight: FontWeight.w400,
     fontSize: 16
-  )
+  );
 }
 
 TextStyle dateCreatedStyle() {
@@ -59,5 +59,5 @@ TextStyle dateCreatedStyle() {
     color: Colors.white,
     fontWeight: FontWeight.w100,
     fontSize: 13
-  )
+  );
 }
