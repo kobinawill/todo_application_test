@@ -16,6 +16,10 @@ void main(){
       appBar: new AppBar(
         title: new Text("ToDo App"),
         backgroundColor: Colors.orange,
+        actions: <Widget>[
+          new Icon(Icons.list, color: Colors.white,),
+          new Padding(padding: const EdgeInsets.only(right: 12.0))
+        ],
       ),
       backgroundColor: Colors.white,
       body: new MainScreen(),

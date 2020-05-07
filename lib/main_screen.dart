@@ -36,6 +36,7 @@ class _MainScreenState extends State<MainScreen> {
                       hintText: 'enter your stuff',
                       icon: new Icon(Icons.note_add, color: Colors.orange,)
                   ),
+                  autofocus: true,
                 ))
               ],
             ),
@@ -43,6 +44,7 @@ class _MainScreenState extends State<MainScreen> {
         new FlatButton(
             onPressed: (){
               addToDatabase(floatingController.text);
+              floatingController.clear();
               Navigator.pop(context);
             },
             child: new Text("Save")),
@@ -74,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
   
-  //DELETE USER FUNCTION
+  //DELETE ITEM FUNCTION
   void deleteItem(int id, int index) async {
       await database.deleteUser(id);
       setState(() {
@@ -82,6 +84,50 @@ class _MainScreenState extends State<MainScreen> {
       });
   }
 
+  //UPDATE ITEM FUNCTIONS
+  void updateItem(String text, int id, int index) async {
+    Item newItem = await database.getOneUser(id);
+    setState(() async {
+      items.removeWhere((element){
+        return items[index].itemName == newItem.itemName;
+      });
+
+      int itemInt = await database.updateUser(text, id);
+      loadDatabase();
+    });
+  }
+  void updateItemDialogue(int id, int index){
+    var alert = new AlertDialog(
+      content: new Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Expanded(child: new TextField(
+            controller: floatingController,
+            decoration: new InputDecoration(
+                labelText: 'Update Item',
+                hintText: 'enter your stuff',
+                icon: new Icon(Icons.note_add, color: Colors.orange,)
+            ),
+            autofocus: true,
+          ))
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+            onPressed: (){
+              updateItem(floatingController.text, id, index);
+              Navigator.pop(context);
+            },
+            child: new Text("Save")),
+        new FlatButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            child: new Text("Cancel"))
+      ],
+    );
+    showDialog(context: context , builder: (_) => alert);
+  }
 
 
 
@@ -107,6 +153,9 @@ class _MainScreenState extends State<MainScreen> {
                               deleteItem(items[indexValue].id, indexValue);
                             },
                           ),
+                          onLongPress: () {
+                            updateItemDialogue(items[indexValue].id, indexValue);
+                          },
                         ),
                       );
                     }))
